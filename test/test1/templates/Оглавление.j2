@@ -1,0 +1,12 @@
+ 
+*Справочники*
+
+{% for spr in s1_json.sprs %}
+[Справочник {{ spr.name }}]({{ url(url = 'Справочники/{{ data.name }}.md', target_template = 'spr.j2', data = spr) }})    
+{% endfor %}
+
+{% set s2 = from_file("./test/test1/data/s2.json") %}
+{% set xl = from_dir("./test/test1/data", "**/*.xml") %}
+Это значение из файла данных ./data/s2.json - {{ s2.sprs[0].name }}
+Это значение из файла данных ./data/p1.xml -  {{ xl.p1_xml.MetaDataObject.Role.Properties.Synonym.item.content }}
+Это значение из файла данных ./data/nst.2/p2.xml - {{ xl.nst_2.p2_xml.MetaDataObject.Role }}
