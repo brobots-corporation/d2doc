@@ -113,10 +113,10 @@ from_file(file, format)
 from_dir(path, mask)
 ```
 
-| Parameter | Requare|Description
-| --- | --- | --- | --- |
+| Parameter | Requare|Description|
+| --- | --- | --- |
 | `path` | Да | Путь к каталогу с файлами данных |
-| `mask` | Да | Маска файлов (формат `glob`).
+| `mask` | Да | Маска файлов (формат `glob`).|
 
 Пример:
 ```
