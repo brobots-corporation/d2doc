@@ -15,6 +15,8 @@ import shutil
 
 env = Environment(trim_blocks=True, lstrip_blocks=True)
 
+supported_input_format_file = ['json', 'yaml', 'yml', 'xml']
+
 # Config logging
 log = logging.getLogger("techdoc")
 log.setLevel(logging.DEBUG)
@@ -72,20 +74,28 @@ def from_file(file, format=''):
             ord_dct = xmltodict.parse(
                 read_file.read(), process_namespaces=False)
             return ord_dct
-
+    return None    
 
 @template_function
 def from_dir(path, mask):
+    log.info(" Loading data from %s" % str(path))
     data = {}
     root = pathlib.Path(path)
     for data_file in root.glob(mask):
         if data_file.is_file():
-            log.info(" Loaded data from %s" % str(data_file))
+            
             filename = os.path.basename(os.path.realpath(data_file))
             relpath = os.path.relpath(data_file, path)
             file_path = os.path.realpath(data_file)
             name = os.path.splitext(filename)[0]
 
+            # Skiop file If file extension not in suppoted format
+            extension = file_path.split('.')[-1]
+            if extension not in supported_input_format_file:
+                log.debug(" Skip %s" % data_file)
+                continue
+
+            log.info(" Loaded %s" % str(data_file))
             lnk = relpath.split('/')
             for i in range(len(lnk)):
                 lnk[i] = lnk[i].replace('.', '_')
