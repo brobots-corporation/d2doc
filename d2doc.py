@@ -65,14 +65,14 @@ def from_file(file, format=''):
     if not format:
         extension = file.split('.')[-1]
         format = extension.lower()
-    with open(file, "r") as read_file:
+    with open(file, "r", encoding='utf-8') as read_file:
         if format == 'json':
             return json.load(read_file)
         elif format == 'yaml' or format == 'yml':
             return yaml.load(read_file)
         elif format == 'xml':
             ord_dct = xmltodict.parse(
-                read_file.read(), process_namespaces=False)
+                read_file.read(), process_namespaces=False, encoding='utf-8')
             return ord_dct
     return None    
 
@@ -231,7 +231,7 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
         # Save rendered document
         full_path = os.path.join(dirname, filename)
         try:
-            with open(full_path, 'x') as res_file:
+            with open(full_path, 'x', encoding='utf-8') as res_file:
                 res_file.write(doc)
                 log.info("Saved to '%s'" % full_path)
         except:
