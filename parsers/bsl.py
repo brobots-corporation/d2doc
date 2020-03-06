@@ -12,54 +12,36 @@ class Bsl:
     def __init__(self, text):
         super().__init__()
         self.text = text
+        self.module = {}
 
     def parse(self):
-        module = self._get_description()
-        module['funcs'] = {}
-        # module['spaces'] = {}
+        self._set_stub_module()
+        self._set_description()
+        self._set_regions()
+        self._set_procs()
 
-        module.update(self._get_procs())
-        return module
+        return self.module
 
-    def _get_description(self):
-        """ Получение описания модуля
-        return {
-            "description": "Описание модуля",
-            "spaces": [
-                {
-                    "name": "Область1",
-                    "spaces": [
-                        {
-                            "name": "Вложенная область"
-                        }
-                    ]
-                }
-            ]
-        }
-        """
+    def _set_stub_module(self):
 
-        return {
-            "description": "Описание модуля",
-            "spaces": [
-                {
-                    "name": "Область1",
-                    "spaces": [
-                        {
-                            "name": "Вложенная область"
-                        }
-                    ]
-                }
-            ]
+        self.module = {
+            "description": "",
+            "regions": [],
+            "funcs": []
         }
 
-    def _get_procs(self):
+    def _set_description(self): #TODO: Получение описания модуля
+        """ Получение описания модуля"""
+        self.module['description'] = ""
+
+    def _set_procs(self):
         """ Получение описаний процедур и функций 
-        return {
+        {
             "funcs": [
                 {
                     "name": "Имя процедуры",
                     "description": "Описание процедуры",
-                    "space": "Область1",
+                    "region": "Область1",
                     "export": True,
                     "params": "Список параметров через ,"
                     "in": [
@@ -101,7 +83,7 @@ class Bsl:
                     "description": "",
                     "params": params,
                     "export": str(export).upper() == "ЭКСПОРТ",
-                    "space": "",
+                    "region": "",
                     "in": "",
                     "out": "",
                     "example": ""
@@ -110,9 +92,7 @@ class Bsl:
 
         # Add in,out, description, example
         self._add_details(listfunc)
-        return {
-            "funcs": listfunc
-        }
+        self.module.update({"funcs": listfunc})
 
     def _get_fn_byname(self, fn, listfunc):
         for f in listfunc:
@@ -169,6 +149,24 @@ class Bsl:
 
     def _example(self, inputtext):
         return self._get_block('Пример', inputtext)
+
+    def _set_regions(self):
+        """ Получение областей
+        return {
+            "regions": [
+                {
+                    "name": "Область1",
+                    "regions": [
+                        {
+                            "name": "Вложенная область 1"
+                        }
+                    ]
+                }
+            ]
+        }
+        """
+
+        pass
 
 
 if __name__ == '__main__':
