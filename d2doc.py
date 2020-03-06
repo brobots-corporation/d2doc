@@ -12,6 +12,7 @@ import logging
 import pathlib
 import xmltodict
 import shutil
+from parsers import bsl
 
 env = Environment(trim_blocks=True, lstrip_blocks=True)
 
@@ -73,7 +74,10 @@ def from_file(file, format=''):
         elif format == 'xml':
             ord_dct = xmltodict.parse(
                 read_file.read(), process_namespaces=False, encoding='utf-8')
-            return ord_dct
+            return ord_dct    
+        elif format == 'bsl':
+            return bsl.parse(read_file.read())
+
     return None    
 
 @template_function
