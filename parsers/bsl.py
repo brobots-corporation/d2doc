@@ -30,7 +30,7 @@ class Bsl:
             "funcs": []
         }
 
-    def _set_description(self): #TODO: Получение описания модуля
+    def _set_description(self):  # TODO: Получение описания модуля
         """ Получение описания модуля"""
         self.module['description'] = ""
 
@@ -84,8 +84,8 @@ class Bsl:
                     "params": params,
                     "export": str(export).upper() == "ЭКСПОРТ",
                     "region": "",
-                    "in": "",
-                    "out": "",
+                    "in": [],
+                    "out": [],
                     "example": ""
                 }
                 listfunc.append(record)
@@ -112,7 +112,7 @@ class Bsl:
             if len(groups) >= 4:
                 namefunc = groups[3]
                 found, fn = self._get_fn_byname(namefunc, listfunc)
-                fn['description'] = groups[0]
+                fn['description'] = self._format_text(groups[0])
                 if found:
                     in_out_exmpl = groups[1]
                     fn['in'] = self._in(in_out_exmpl)
@@ -135,24 +135,88 @@ class Bsl:
 
     def _in(self, inputtext):
         textparams = self._get_block('Параметры', inputtext)
+        params = self._get_in_params(textparams)
+        return params
 
-        # Разбираем входные параметры
-
-        return textparams
+    def _get_in_params(self, inputtext):
+        pattern = r'(?:^\s*\/\/[\s]{2,2})(?P<name>[А-Яа-я\w]+)(?:(?:\s*-\s*)(?P<type>[^-\n]*))?(?:\s*-\s*(?P<description_start>.))?'
+        matches = re.finditer(pattern, inputtext, re.MULTILINE)
+        listparams = list()
+        for matchNum, match in enumerate(matches, start=1):
+            all = match.group()
+            groups = match.groups()
+            if len(groups) == 3:
+                param = {
+                    "name": groups[0],
+                    "param_types": groups[1],
+                    "start_desc": match.start(3),
+                    "start_param": match.start(0)
+                }
+                listparams.append(param)
+        out = list()
+        if listparams:
+            count = len(listparams)
+            i = 0
+            for param in listparams:
+                if i == count - 1:  # Последний элемент
+                    description = inputtext[param['start_desc']:]
+                else:
+                    description = inputtext[param['start_desc']:listparams[i+1]['start_param']]
+                i = i + 1
+                out.append({
+                    "name": param['name'],
+                    "type": param['param_types'],
+                    "description": self._format_text(description)
+                })
+        return out
 
     def _out(self, inputtext):
         returnvalue = self._get_block('Возвращаемое значение', inputtext)
+        params = self._get_out_params(returnvalue)
+        return params
 
-        # Разбираем выходные параметры
-
-        return returnvalue
+    def _get_out_params(self, inputtext):
+        pattern = r'(?:^\s*\/\/[\s]{2,2})(?P<type>\S.*)-(?P<description_start>.)'
+        matches = re.finditer(pattern, inputtext, re.MULTILINE)
+        listparams = list()
+        for matchNum, match in enumerate(matches, start=1):
+            all = match.group()
+            groups = match.groups()
+            if len(groups) == 2:
+                param = {
+                    "type": groups[0],
+                    "start_desc": match.start(2),
+                    "start_param": match.start(1)
+                }
+                listparams.append(param)
+        out = list()
+        if listparams:
+            count = len(listparams)
+            i = 0
+            for param in listparams:
+                if i == count - 1:  # Последний элемент
+                    description = inputtext[param['start_desc']:]
+                else:
+                    description = inputtext[param['start_desc']
+                        :listparams[i+1]['start_param']]
+                i = i + 1
+                out.append({
+                    "type": param['type'],
+                    "description": self._format_text(description)
+                })
+        return out
 
     def _example(self, inputtext):
         return self._get_block('Пример', inputtext)
 
+    def _format_text(self, text):
+        # return re.sub(r'(^\s*\/\/\s*)','', text).strip()
+        return re.sub(r'[\/\n\r\t]', '', text).strip()
+        ''.translate()
+
     def _set_regions(self):
         """ Получение областей
-        return {
+        module['regions'] = {
             "regions": [
                 {
                     "name": "Область1",
