@@ -136,16 +136,11 @@ def _split_rec(k, v, out):
 @click.group()
 @click.option("--log-level", "log_level", envvar='LOG_LEVEL', required=False,
               help="Log level [CRITICAL, FATAL, ERROR, WARNING, DEBUG, INFO, NOTSET]",)
-@click.option("--transliterate-urls", "transliterate_urls", envvar='TRANSLITERATE_URLS', default=False, is_flag=True, required=False,
-              help="Transliterate urls.",)
-def cli(log_level, transliterate_urls):
+def cli(log_level):
     if log_level:
         log.setLevel(log_level)
     else:
         log.setLevel(logging.INFO)
-
-    global translit_urls
-    translit_urls = transliterate_urls
 
 
 @cli.command()
@@ -169,9 +164,14 @@ def cli(log_level, transliterate_urls):
               help="Erase output dir befor build.",)
 @click.option("--output-format", "output_format", default="md", envvar='OUTPUT_FORMAT', required=False,
               help="File extention for output files.",)
-def build(templates, start_templates, data_file, output_dir, erase_output_dir, data_dir, output_format, data_dir_mask):
+@click.option("--transliterate-urls", "transliterate_urls", envvar='TRANSLITERATE_URLS', default=False, is_flag=True, required=False,
+              help="Transliterate urls.",)
+def build(templates, start_templates, data_file, output_dir, erase_output_dir, data_dir, output_format, data_dir_mask, transliterate_urls):
     log.info('Build documentation')
 
+    global translit_urls
+    translit_urls = transliterate_urls
+    
     global ctx
 
     # Erase output dir if non empty and set key "--erase-output-dir"

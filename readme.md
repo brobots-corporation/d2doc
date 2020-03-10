@@ -19,8 +19,7 @@ Usage: d2doc.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --log-level TEXT  Log level [CRITICAL, FATAL, ERROR, WARNING, DEBUG, INFO,
-                    NOTSET]
-  --transliterate-urls  Transliterate urls.                  
+                    NOTSET]                 
   --help            Show this message and exit.
 
 Commands:
@@ -39,6 +38,7 @@ Options:
   -o, --output-dir PATH       Output dir for documentation.
   --erase-output-dir          Erase output dir befor build.
   --output-format TEXT        File extention for output files.
+  --transliterate-urls        Transliterate urls.
   --help                      Show this message and exit.
 ```
 
