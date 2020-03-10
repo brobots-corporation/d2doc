@@ -12,10 +12,11 @@ import logging
 import pathlib
 import xmltodict
 import shutil
+from parsers import bsl
 
 env = Environment(trim_blocks=True, lstrip_blocks=True)
 
-supported_input_format_file = ['json', 'yaml', 'yml', 'xml']
+supported_input_format_file = ['json', 'yaml', 'yml', 'xml', 'bsl']
 
 # Config logging
 log = logging.getLogger("techdoc")
@@ -74,7 +75,11 @@ def from_file(file, format=''):
             ord_dct = xmltodict.parse(
                 read_file.read(), process_namespaces=False, encoding='utf-8')
             return ord_dct
-    return None    
+        elif format == 'bsl':
+            return bsl.parse(read_file.read())
+
+    return None
+
 
 @template_function
 def from_dir(path, mask):
@@ -83,7 +88,7 @@ def from_dir(path, mask):
     root = pathlib.Path(path)
     for data_file in root.glob(mask):
         if data_file.is_file():
-            
+
             filename = os.path.basename(os.path.realpath(data_file))
             relpath = os.path.relpath(data_file, path)
             file_path = os.path.realpath(data_file)
@@ -209,8 +214,13 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
                  (rec.target_template, rec.url))
 
         # Render
-        template = env.get_template(rec.target_template)
-        doc = template.render(rec.data)
+        try:
+            template = env.get_template(rec.target_template)
+            doc = template.render(rec.data)
+        except:
+            log.error("Can not render document (template=%s, url=%s)" %
+                      (rec.target_template, rec.url), exc_info=1)
+            exit(1)
 
         # Get file path
         file_path = os.path.join(output_dir, rec.url)

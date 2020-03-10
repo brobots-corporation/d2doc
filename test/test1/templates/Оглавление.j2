@@ -11,3 +11,10 @@
 Это значение из файла данных ./data/s2.json - {{ s2.sprs[0].name }}
 Это значение из файла данных ./data/p1.xml -  {{ xl.p1_xml.MetaDataObject.Role.Properties.Synonym.item.content }}
 Это значение из файла данных ./data/nst.2/p2.xml - {{ xl.nst_2.p2_xml.MetaDataObject.Role }}
+
+{% set bsl = from_file("./test/test1/data/test.bsl") %}
+Это значение из файла bsl - {{ bsl.funcs[0].name }}
+
+
+
+
