@@ -13,6 +13,7 @@ import pathlib
 import xmltodict
 import shutil
 from parsers import bsl
+import translit
 
 env = Environment(trim_blocks=True, lstrip_blocks=True)
 
@@ -30,6 +31,8 @@ urls = list()
 Record = namedtuple("Record", ['url', 'target_template', 'data'])
 ctx = {}
 
+translit_urls = False
+
 
 def template_function(func):
     env.globals[func.__name__] = func
@@ -45,8 +48,13 @@ def url(**param):
     # data - данные для передачи в шаблон
     """
     # Рендерим url
-    tmplt = env.from_string(param['url'])
+    url = param['url']
+    tmplt = env.from_string(url)
     new_url = tmplt.render(**param)
+
+    log.debug("Flag transliterate is  %s" % str(translit_urls))
+    if translit_urls:
+        new_url = translit.transliterate(new_url, translit.translit_table)
 
     # Регистрируем страницу для обработки
     if new_url not in urls:
@@ -128,11 +136,16 @@ def _split_rec(k, v, out):
 @click.group()
 @click.option("--log-level", "log_level", envvar='LOG_LEVEL', required=False,
               help="Log level [CRITICAL, FATAL, ERROR, WARNING, DEBUG, INFO, NOTSET]",)
-def cli(log_level):
+@click.option("--transliterate-urls", "transliterate_urls", envvar='TRANSLITERATE_URLS', default=False, is_flag=True, required=False,
+              help="Transliterate urls.",)
+def cli(log_level, transliterate_urls):
     if log_level:
         log.setLevel(log_level)
     else:
         log.setLevel(logging.INFO)
+
+    global translit_urls
+    translit_urls = transliterate_urls
 
 
 @cli.command()
