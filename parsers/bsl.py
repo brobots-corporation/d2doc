@@ -26,6 +26,7 @@ class Bsl:
     def _set_stub_module(self):
 
         self.module = {
+            "description_short": "",
             "description": "",
             "regions": [],
             "funcs": []
@@ -33,7 +34,16 @@ class Bsl:
 
     def _set_description(self):  # TODO: Получение описания модуля
         """ Получение описания модуля"""
-        self.module['description'] = ""
+        pattern = r'^\/\/@ (?P<name>.*(?:\n))(?P<desc>(?:\s*\/\/[^\r\n]*\n)+?\/\/\n)'
+        matches = re.finditer(pattern, self.text, re.MULTILINE)
+        for matchNum, match in enumerate(matches, start=1):
+            all = match.group()
+            groups = match.groups()
+            if len(groups) == 2:
+                self.module['description_short'] = self._format_text(groups[0])
+                self.module['description'] = self._format_text(groups[1])
+                return               
+        
 
     def _set_procs(self):
         """ Получение описаний процедур и функций 
@@ -227,11 +237,8 @@ class Bsl:
             "regions": [
                 {
                     "name": "Область1",
-                    "regions": [
-                        {
-                            "name": "Вложенная область 1"
-                        }
-                    ]
+                    "start": Стартовая позиция в модуле
+                    "end": Позиция окончания в модуле
                 }
             ]
         }
