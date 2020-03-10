@@ -20,6 +20,7 @@ Usage: d2doc.py [OPTIONS] COMMAND [ARGS]...
 Options:
   --log-level TEXT  Log level [CRITICAL, FATAL, ERROR, WARNING, DEBUG, INFO,
                     NOTSET]
+  --transliterate-urls  Transliterate urls.                  
   --help            Show this message and exit.
 
 Commands:
