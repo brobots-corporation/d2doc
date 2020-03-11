@@ -154,7 +154,7 @@ class Bsl:
         return params
 
     def _get_in_params(self, inputtext):
-        pattern = r'(?:^\s*\/\/[\s]{2,2})(?P<name>[А-Яа-я\w]+)(?:(?:\s*-\s*)(?P<type>[^-\n]*))?(?:\s*-\s*(?P<description_start>.))?'
+        pattern = r'(?:^\s*\/\/[\s]{2,5})(?P<name>[А-Яа-я\w]+)(?:(?:\s*-\s*)(?P<type>[^-\n]*))?(?:\s*-\s*(?P<description_start>.))?'
         matches = re.finditer(pattern, inputtext, re.MULTILINE)
         listparams = list()
         for matchNum, match in enumerate(matches, start=1):
@@ -192,7 +192,7 @@ class Bsl:
         return params
 
     def _get_out_params(self, inputtext):
-        pattern = r'(?:^\s*\/\/[\s]{2,2})(?P<type>\S.*)-(?P<description_start>.)'
+        pattern = r'(?:^\s*\/\/[\s]{2,5})(?P<type>\S.*)-(?P<description_start>.)'
         matches = re.finditer(pattern, inputtext, re.MULTILINE)
         listparams = list()
         for matchNum, match in enumerate(matches, start=1):
