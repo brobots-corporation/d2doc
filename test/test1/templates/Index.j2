@@ -1,19 +1,22 @@
  
 *Справочники*
 
+Значения из данных переданных в качестве параметров запуска утилиты.
 {% for spr in s1_json.sprs %}
-[Справочник {{ spr.name }}]({{ url(url = 'Справочники/{{ data.name }}.md', target_template = 'spr.j2', data = spr) }})    
+[Справочник {{ spr.name }}]({{ url(url = 'Catalog/{{ data.name }}.md', target_template = 'catalog.j2', data = spr) }})    
 {% endfor %}
 
 {% set s2 = from_file("./test/test1/data/s2.json") %}
 {% set xl = from_dir("./test/test1/data", "**/*.xml") %}
 {% set x2 = from_dir("./test/test1/data", "**/*") %}
+{% set bsl = from_file("./test/test1/data/test.bsl") %}
+{% set y1 = from_file("./test/test1/data/y1.yml") %}
+
 Это значение из файла данных ./data/s2.json - {{ s2.sprs[0].name }}
 Это значение из файла данных ./data/p1.xml -  {{ xl.p1_xml.MetaDataObject.Role.Properties.Synonym.item.content }}
 Это значение из файла данных ./data/nst.2/p2.xml - {{ xl.nst_2.p2_xml.MetaDataObject.Role }}
-
-{% set bsl = from_file("./test/test1/data/test.bsl") %}
-Это значение из файла bsl - {{ bsl.funcs[0].name }}
+Это значение из файла ./data/test.bsl - {{ bsl.funcs[0].name }}
+Это значение из файла ./data/y1.yml - {{ y1.fake[1].name }}
 
 
 

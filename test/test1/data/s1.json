@@ -1,11 +1,11 @@
 {
     "sprs": [
         {
-            "name": "Валюты",
+            "name": "Currency",
             "synonim": "Валюты"
         },
         {
-            "name": "Номенклатура",
+            "name": "Goods",
             "synonim": "Номенклатура"   
         }
     ]

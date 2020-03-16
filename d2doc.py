@@ -78,7 +78,7 @@ def from_file(file, format=''):
         if format == 'json':
             return json.load(read_file)
         elif format == 'yaml' or format == 'yml':
-            return yaml.load(read_file)
+            return yaml.load(read_file, Loader=yaml.FullLoader)
         elif format == 'xml':
             ord_dct = xmltodict.parse(
                 read_file.read(), process_namespaces=False, encoding='utf-8')
@@ -132,6 +132,14 @@ def _split_rec(k, v, out):
     else:
         out[k] = v
 
+def _copy_static(folders, output_dir):
+    if folders:
+        for src_folder in folders:
+            sfx = list(os.path.split(src_folder)).pop()
+            dest_folder = os.path.join(output_dir,sfx)            
+            log.debug("Copy from %s to %s" % (src_folder, dest_folder))
+            shutil.copytree(src=src_folder, dst=dest_folder)        
+
 
 @click.group()
 @click.option("--log-level", "log_level", envvar='LOG_LEVEL', required=False,
@@ -166,12 +174,16 @@ def cli(log_level):
               help="File extention for output files.",)
 @click.option("--transliterate-urls", "transliterate_urls", envvar='TRANSLITERATE_URLS', default=False, is_flag=True, required=False,
               help="Transliterate urls.",)
-def build(templates, start_templates, data_file, output_dir, erase_output_dir, data_dir, output_format, data_dir_mask, transliterate_urls):
+@click.option("--static", "static_files", required=False, multiple=True,
+              help="Dir with static files to copy in output.",
+              type=click.Path(exists=True, dir_okay=True, readable=True),)
+def build(templates, start_templates, data_file, output_dir, erase_output_dir, data_dir, output_format, data_dir_mask, transliterate_urls, static_files):
     log.info('Build documentation')
+    #log.info(static_files)
 
     global translit_urls
     translit_urls = transliterate_urls
-    
+
     global ctx
 
     # Erase output dir if non empty and set key "--erase-output-dir"
@@ -190,6 +202,10 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
     # Set templates dir
     file_loader = FileSystemLoader(templates)
     env.loader = file_loader
+
+    # Copy static files to output folder
+    log.info("Copy static files to output - %s" % str(static_files))
+    _copy_static(static_files, output_dir)
 
     # If set --data-file parameter read data from file
     if data_file:

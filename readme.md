@@ -6,6 +6,7 @@
 * Работа в ОС: `Linux`, `Mac OS X`, `Windows`;
 * Формат шаблонов [jinja2](https://jinja.palletsprojects.com/);
 * Формат файлов входных данных `xml,json,yaml,bsl`.
+* Статика
 
 ## Установка и обновление
 Установка зависимостей
@@ -39,6 +40,7 @@ Options:
   --erase-output-dir          Erase output dir befor build.
   --output-format TEXT        File extention for output files.
   --transliterate-urls        Transliterate urls.
+  --static PATH               Dir with static files to copy in output (multiple).
   --help                      Show this message and exit.
 ```
 
@@ -51,6 +53,7 @@ d2doc.py build \
 	--data-dir './test/test1/data' \
 	--data-dir-mask '**/*.json' \
 	--output-dir './test/test1/doc' \
+  --static './test/test1/static' \
 	--erase-output-dir
 ```
 
@@ -61,6 +64,7 @@ export D2DOC_BUILD_START_TEMPLATES='Оглавление'
 export D2DOC_BUILD_DATA_DIR='./test/test1/data'
 export D2DOC_BUILD_DATA_DIR_MASK='**/*.json'
 export D2DOC_BUILD_OUTPUT_DIR='./test/test1/doc'
+export D2DOC_BUILD_STATIC='./test/test1/doc/static'
 export D2DOC_LOG_LEVEL='DEBUG'
 d2doc.py build --erase-output-dir
 ```

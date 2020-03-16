@@ -17,15 +17,17 @@ install: prepare_venv
 run-dir: prepare_venv
 	${PYTHON} d2doc.py build \
 		--templates ./test/test1/templates \
-		--start-templates 'Оглавление' \
+		--start-templates 'index' \
 		--data-dir ./test/test1/data \
 		--data-dir-mask '**/*.json' \
 		--output-dir './test/test1/doc' \
+		--static './test/test1/templates/static' \
+		--static './test/test1/templates/static2' \
 		--erase-output-dir
 
 run-env: prepare_venv
 	export D2DOC_BUILD_TEMPLATES='./test/test1/templates' \
-	&& export D2DOC_BUILD_START_TEMPLATES='Оглавление' \
+	&& export D2DOC_BUILD_START_TEMPLATES='index' \
 	&& export D2DOC_BUILD_DATA_DIR='./test/test1/data' \
 	&& export D2DOC_BUILD_DATA_DIR_MASK='**/*.json' \
 	&& export D2DOC_BUILD_OUTPUT_DIR='./test/test1/doc' \
