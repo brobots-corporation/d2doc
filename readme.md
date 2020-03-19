@@ -2,6 +2,8 @@
 # d2doc
 Генерация документации на основании входных файлов с данными и шаблонов выходных документов
 
+[![Build Status](https://travis-ci.org/brobots-corporation/d2doc.svg?branch=master)](https://travis-ci.org/brobots-corporation/d2doc) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=d2doc&metric=alert_status)](https://sonarcloud.io/dashboard?id=d2doc)
+
 ## Возможности
 * Работа в ОС: `Linux`, `Mac OS X`, `Windows`;
 * Формат шаблонов [jinja2](https://jinja.palletsprojects.com/);
