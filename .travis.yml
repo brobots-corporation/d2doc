@@ -1,0 +1,17 @@
+language: python
+
+dist: xenial
+
+jobs:
+  include:
+    - stage: "Code analyze"
+      python: 3.8
+      addons:
+        sonarcloud:
+          organization: "brobots-corporation"
+      script: sonar-scanner
+
+notifications:
+  email:
+    on_failure: change
+    on_error: change
