@@ -246,7 +246,7 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
         except:
             log.error("Can not render document (template=%s, url=%s)" %
                       (rec.target_template, rec.url), exc_info=1)
-            exit(1)
+            raise
 
         # Get file path
         file_path = os.path.join(output_dir, rec.url)
@@ -263,6 +263,7 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
             os.makedirs(dirname)
         except:
             log.error("Unable to make dirs '%s'" % dirname)
+            raise
 
         # Save rendered document
         full_path = os.path.join(dirname, filename)
@@ -272,6 +273,7 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
                 log.info("Saved to '%s'" % full_path)
         except:
             log.error("Can not save rendered document", exc_info=1)
+            raise
 
 
 if __name__ == '__main__':
