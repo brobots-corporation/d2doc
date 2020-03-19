@@ -114,7 +114,6 @@ class Bsl:
             if f['name'] == fn:
                 return (True, f)
         return (False, None)
-        pass
 
     def _add_details(self, listfunc):
         """Add 'in, out, description, example' """
