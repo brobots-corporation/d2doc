@@ -130,13 +130,48 @@ def _split_rec(k, v, out):
     else:
         out[k] = v
 
+
 def _copy_static(folders, output_dir):
     if folders:
         for src_folder in folders:
             sfx = list(os.path.split(src_folder)).pop()
-            dest_folder = os.path.join(output_dir,sfx)            
+            dest_folder = os.path.join(output_dir, sfx)
             log.debug("Copy from %s to %s" % (src_folder, dest_folder))
-            shutil.copytree(src=src_folder, dst=dest_folder)        
+            shutil.copytree(src=src_folder, dst=dest_folder)
+
+
+def _erase_output_dir(output_dir, erase_output_dir):
+    # Erase output dir if non empty and set key "--erase-output-dir"
+    if output_dir and erase_output_dir:
+        log.debug("Erase output dir '%s'" % str(output_dir))
+
+        root = pathlib.Path(output_dir)
+        for p in root.glob('*'):
+            if p.is_dir():
+                shutil.rmtree(p)
+                log.debug(" Deleted '%s'" % str(p))
+            elif p.is_file():
+                os.remove(p)
+                log.debug(" Deleted '%s'" % str(p))
+
+
+def _datadir_to_glabal_var(data_dir, data_dir_mask):
+    # If set --data-dir parameter read data from dir
+    if data_dir and data_dir_mask:
+        log.info("Loading global data from dir '%s' with mask '%s'" %
+                 (data_dir, data_dir_mask))
+        gl = from_dir(data_dir, data_dir_mask)
+        env.globals.update(gl)
+
+
+def _datafile_to_global_var(data_file):
+    # If set --data-file parameter read data from file
+    if data_file:
+        log.info("Load global data from file '%s'" % data_file)
+        with open(data_file) as file_handler:
+            json_data = file_handler.read()
+            gl = (json.loads(json_data))
+            env.globals.update(gl)
 
 
 @click.group()
@@ -177,7 +212,6 @@ def cli(log_level):
               type=click.Path(exists=True, dir_okay=True, readable=True),)
 def build(templates, start_templates, data_file, output_dir, erase_output_dir, data_dir, output_format, data_dir_mask, transliterate_urls, static_files):
     log.info('Build documentation')
-    #log.info(static_files)
 
     global translit_urls
     translit_urls = transliterate_urls
@@ -185,17 +219,7 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
     global ctx
 
     # Erase output dir if non empty and set key "--erase-output-dir"
-    if output_dir and erase_output_dir:
-        log.debug("Erase output dir '%s'" % str(output_dir))
-
-        root = pathlib.Path(output_dir)
-        for p in root.glob('*'):
-            if p.is_dir():
-                shutil.rmtree(p)
-                log.debug(" Deleted '%s'" % str(p))
-            elif p.is_file():
-                os.remove(p)
-                log.debug(" Deleted '%s'" % str(p))
+    _erase_output_dir(output_dir, erase_output_dir)
 
     # Set templates dir
     file_loader = FileSystemLoader(templates)
@@ -206,21 +230,12 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
     _copy_static(static_files, output_dir)
 
     # If set --data-file parameter read data from file
-    if data_file:
-        log.info("Load global data from file '%s'" % data_file)
-        with open(data_file) as file_handler:
-            json_data = file_handler.read()
-            gl = (json.loads(json_data))
-            env.globals.update(gl)
+    _datafile_to_global_var(data_file)
 
     # If set --data-dir parameter read data from dir
-    if data_dir and data_dir_mask:
-        log.info("Loading global data from dir '%s' with mask '%s'" %
-                 (data_dir, data_dir_mask))
-        gl = from_dir(data_dir, data_dir_mask)
-        env.globals.update(gl)
+    _datadir_to_glabal_var(data_dir, data_dir_mask)
 
-    # Add starts template
+    # Add starts template to queue
     tmplts = start_templates.split(',')
     log.info("Adding main templates in queue")
     for tmpl in tmplts:
@@ -260,7 +275,8 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
 
         # Create dirs
         try:
-            os.makedirs(dirname)
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
         except:
             log.error("Unable to make dirs '%s'" % dirname)
             raise
