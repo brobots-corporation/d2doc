@@ -36,8 +36,7 @@ class Bsl:
         """ Получение описания модуля"""
         pattern = r'^\/\/@ (?P<name>.*(?:\n))(?P<desc>(?:\s*\/\/[^\r\n]*\n)+?\/\/\n)'
         matches = re.finditer(pattern, self.text, re.MULTILINE)
-        for matchNum, match in enumerate(matches, start=1):
-            all = match.group()
+        for match_num, match in enumerate(matches, start=1):
             groups = match.groups()
             if len(groups) == 2:
                 self.module['description_short'] = self._format_text(groups[0])
@@ -81,12 +80,11 @@ class Bsl:
         pattern = r'^\s*(?P<type>Процедура|Функция)\s+(?P<name>[А-Яа-я\w]+)s*\((?P<params>[^)]*)\)\s*(?P<export>Экспорт)?'
         matches = re.finditer(pattern, self.text, re.MULTILINE)
         listfunc = list()
-        for matchNum, match in enumerate(matches, start=1):
+        for match_num, match in enumerate(matches, start=1):
             all = match.group()
             start = match.start(1)
             groups = match.groups()
             if len(groups) == 4:
-                tp = groups[0]
                 name = groups[1]
                 params = groups[2]
                 export = groups[3]
@@ -121,7 +119,7 @@ class Bsl:
         pattern = r"^\n(?P<desc>(?:\s*\/\/[^\r\n]*\n)+?\/\/\n)(?P<comment>(?:\s*\/\/[^\r\n]*\n)*)\s*(?P<type1>Процедура|Функция)\s+(?P<name1>[А-Яа-я\w]+)s*\((?P<params>[^)]*)\)\s*(?P<export>Экспорт)"
         matches = re.finditer(pattern, self.text, re.MULTILINE)
 
-        for matchNum, match in enumerate(matches, start=1):
+        for match_num, match in enumerate(matches, start=1):
             groups = match.groups()
             if len(groups) >= 4:
                 namefunc = groups[3]
@@ -138,8 +136,7 @@ class Bsl:
             (r"(?:", block, "\s*[:]?\s*)(?P<block>[^\r]*?\/\/\n)"))
         matches = re.finditer(pattern, inputtext, re.MULTILINE)
 
-        for matchNum, match in enumerate(matches, start=1):
-            # all = match.group()
+        for match_num, match in enumerate(matches, start=1):            
             groups = match.groups()
             example = ""
             if len(groups) == 1:
@@ -156,8 +153,7 @@ class Bsl:
         pattern = r'(?:^\s*\/\/[\s]{2,5})(?P<name>[А-Яа-я\w]+)(?:(?:\s*-\s*)(?P<type>[^-\n]*))?(?:\s*-\s*(?P<description_start>.))?'
         matches = re.finditer(pattern, inputtext, re.MULTILINE)
         listparams = list()
-        for matchNum, match in enumerate(matches, start=1):
-            all = match.group()
+        for match_num, match in enumerate(matches, start=1):
             groups = match.groups()
             if len(groups) == 3:
                 param = {
@@ -194,8 +190,7 @@ class Bsl:
         pattern = r'(?:^\s*\/\/[\s]{2,5})(?P<type>\S.*)-(?P<description_start>.)'
         matches = re.finditer(pattern, inputtext, re.MULTILINE)
         listparams = list()
-        for matchNum, match in enumerate(matches, start=1):
-            all = match.group()
+        for match_num, match in enumerate(matches, start=1):
             groups = match.groups()
             if len(groups) == 2:
                 param = {
@@ -224,7 +219,6 @@ class Bsl:
         return self._format_example(self._get_block('Пример', inputtext))
 
     def _format_text(self, text):
-        # return re.sub(r'(^\s*\/\/\s*)','', text).strip()
         return re.sub(r'[\/\n\r\t]', '', text).strip()
 
     def _format_example(self,text):
@@ -248,8 +242,7 @@ class Bsl:
         pattern = r'(?:^#Область) (?P<name>.*)'
         matches = re.finditer(pattern, self.text, re.MULTILINE)
         rs = list()
-        for matchNum, match in enumerate(matches, start=1):
-            all = match.group()
+        for match_num, match in enumerate(matches, start=1):
             groups = match.groups()
             if len(groups) == 1:
                 region = {
@@ -260,8 +253,7 @@ class Bsl:
 
         pattern = r'(?:^#КонецОбласти).*'
         matches = re.finditer(pattern, self.text, re.MULTILINE)
-        for matchNum, match in enumerate(matches, start=1):
-            all = match.group()
+        for match_num, match in enumerate(matches, start=1):
             groups = match.groups()
             if len(groups) == 0:
                 regionend = {

@@ -15,7 +15,7 @@ import shutil
 from parsers import bsl
 import translit
 
-env = Environment(trim_blocks=True, lstrip_blocks=True)
+env = Environment(autoescape=True, trim_blocks=True, lstrip_blocks=True)
 
 supported_input_format_file = ['json', 'yaml', 'yml', 'xml', 'bsl']
 
@@ -97,12 +97,10 @@ def from_dir(path, mask):
     for data_file in root.glob(mask):
         if data_file.is_file():
 
-            filename = os.path.basename(os.path.realpath(data_file))
             relpath = os.path.relpath(data_file, path)
             file_path = os.path.realpath(data_file)
-            name = os.path.splitext(filename)[0]
 
-            # Skiop file If file extension not in suppoted format
+            # Skip file If file extension not in suppoted format
             extension = file_path.split('.')[-1]
             if extension not in supported_input_format_file:
                 log.debug(" Skip %s" % data_file)
@@ -212,7 +210,6 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
         log.info("Load global data from file '%s'" % data_file)
         with open(data_file) as file_handler:
             json_data = file_handler.read()
-            # ctx = (json.loads(json_data))
             gl = (json.loads(json_data))
             env.globals.update(gl)
 
@@ -265,7 +262,7 @@ def build(templates, start_templates, data_file, output_dir, erase_output_dir, d
         try:
             os.makedirs(dirname)
         except:
-            pass
+            log.error("Unable to make dirs '%s'" % dirname)
 
         # Save rendered document
         full_path = os.path.join(dirname, filename)
