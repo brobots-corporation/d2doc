@@ -1,3 +1,4 @@
+"""Модуль содержит класс для обработки файлов bsl."""
 import re
 import pprint
 from collections import deque
