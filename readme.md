@@ -89,7 +89,11 @@ tolist(obj_or_list)
 
 Пример:
 ```
-tolist()
+{% set config_xml = from_file("./configuration.xml") %}
+{% set config_props = config_xml.MetaDataObject.Configuration.Properties %}
+{% for role in tolist(config_props.DefaultRoles['xr:Item']) %}
+    * {{role['#text']}}\\
+{% endfor %}
 ```
 
 #### url
