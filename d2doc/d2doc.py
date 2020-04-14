@@ -12,8 +12,8 @@ import logging
 import pathlib
 import xmltodict
 import shutil
-from parsers import bsl
-import translit
+from d2doc.parsers import bsl
+from .translit import transliterate, translit_table
 
 env = Environment(autoescape=True, trim_blocks=True, lstrip_blocks=True)
 
@@ -54,7 +54,7 @@ def url(**param):
 
     log.debug("Flag transliterate is  %s" % str(translit_urls))
     if translit_urls:
-        new_url = translit.transliterate(new_url, translit.translit_table)
+        new_url = transliterate(new_url, translit_table)
 
     # Регистрируем страницу для обработки
     if new_url not in urls:

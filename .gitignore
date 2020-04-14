@@ -1,4 +1,37 @@
-venv
+# Игнорировать файлы VSC
+*launch.json
 .vscode
+
+# Игнорировать файлы Mac OS X
 .DS_Store
-__pycache__
+
+# Игнорировать файлы pyinstaller и сборки для pypi
+**/build
+**/dist
+objects_sonar.spec
+**/bsl2sq.egg-info
+
+# Игнорировать байткод
+*.pyc
+*.pyo
+**/__pycache__/
+
+# Игнорировать каталог с файлами настройки
+**/config/
+
+# Игнорировать каталог с артефактами тестирования
+**/test_src/
+
+# Игнорировать каталог venv с виртуальным окружением
+**/.venv/
+venv
+
+# Игнорировать каталоги с xunit и coverage отчетами
+**/xunit-reports/
+**/coverage-reports/
+.coverage
+tests.xml
+coverage.xml
+
+# Игнорировать файл настройки правил flake8
+.flake8

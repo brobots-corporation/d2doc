@@ -15,23 +15,23 @@ $(VENV_NAME)/bin/activate: requirements.txt
 install: prepare_venv
 	
 run-dir: prepare_venv
-	${PYTHON} d2doc.py build \
-		--templates ./test/test1/templates \
+	${PYTHON} -m d2doc build \
+		--templates ./d2doc/test/test1/templates \
 		--start-templates 'index' \
-		--data-dir ./test/test1/data \
+		--data-dir ./d2doc/test/test1/data \
 		--data-dir-mask '**/*.json' \
-		--output-dir './test/test1/doc' \
-		--static './test/test1/templates/static' \
-		--static './test/test1/templates/static2' \
+		--output-dir './d2doc//test/test1/doc' \
+		--static './d2doc/test/test1/templates/static' \
+		--static './d2doc/test/test1/templates/static2' \
 		--erase-output-dir
 
 run-env: prepare_venv
-	export D2DOC_BUILD_TEMPLATES='./test/test1/templates' \
+	export D2DOC_BUILD_TEMPLATES='./d2doc/test/test1/templates' \
 	&& export D2DOC_BUILD_START_TEMPLATES='index' \
-	&& export D2DOC_BUILD_DATA_DIR='./test/test1/data' \
+	&& export D2DOC_BUILD_DATA_DIR='./d2doc/test/test1/data' \
 	&& export D2DOC_BUILD_DATA_DIR_MASK='**/*.json' \
-	&& export D2DOC_BUILD_OUTPUT_DIR='./test/test1/doc' \
+	&& export D2DOC_BUILD_OUTPUT_DIR='./d2doc/test/test1/doc' \
 	&& export D2DOC_LOG_LEVEL='DEBUG' \
-	&& ${PYTHON} d2doc.py build --erase-output-dir
+	&& ${PYTHON} -m d2doc build --erase-output-dir
 
 run: run-env

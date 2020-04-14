@@ -6,11 +6,11 @@
 [Справочник {{ spr.name }}]({{ url(url = 'Catalog/{{ data.name }}.md', target_template = 'catalog.j2', data = spr) }})    
 {% endfor %}
 
-{% set s2 = from_file("./test/test1/data/s2.json") %}
-{% set xl = from_dir("./test/test1/data", "**/*.xml") %}
-{% set x2 = from_dir("./test/test1/data", "**/*") %}
-{% set bsl = from_file("./test/test1/data/test.bsl") %}
-{% set y1 = from_file("./test/test1/data/y1.yml") %}
+{% set s2 = from_file("./d2doc/test/test1/data/s2.json") %}
+{% set xl = from_dir("./d2doc/test/test1/data", "**/*.xml") %}
+{% set x2 = from_dir("./d2doc/test/test1/data", "**/*") %}
+{% set bsl = from_file("./d2doc/test/test1/data/test.bsl") %}
+{% set y1 = from_file("./d2doc/test/test1/data/y1.yml") %}
 
 Это значение из файла данных ./data/s2.json - {{ s2.sprs[0].name }}
 Это значение из файла данных ./data/p1.xml -  {{ xl.p1_xml.MetaDataObject.Role.Properties.Synonym.item.content }}
