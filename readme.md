@@ -77,6 +77,25 @@ d2doc.py build --erase-output-dir
 ### Вспомогательные функции
 Функции для использования в шаблонах (плюсом к разнообразию функций [jinja2](https://jinja.palletsprojects.com/))
 
+#### tolist
+Используется для обработки коллекций из файлов xml в jinja2, когда возможен только один элемент в колекции. Если передан один объект, то возвращается список с этим объектом.
+
+```
+tolist(obj_or_list)
+```
+| Parameter | Requare|Description |
+| --- | --- | --- |
+| `obj_or_list` | Да | Список произвольных объектов или произвольный объект |
+
+Пример:
+```
+{% set config_xml = from_file("./configuration.xml") %}
+{% set config_props = config_xml.MetaDataObject.Configuration.Properties %}
+{% for role in tolist(config_props.DefaultRoles['xr:Item']) %}
+    * {{role['#text']}}\\
+{% endfor %}
+```
+
 #### url
 Используется для построения внутренних ссылок.
 

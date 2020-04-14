@@ -69,6 +69,22 @@ def url(**param):
 
 
 @template_function
+def tolist(obj_or_list):
+    """Возвращает гарантированный список на основе списка или объекта
+
+    Arguments:
+        obj_or_list {list, any} -- объект или список для обработки
+
+    Returns:
+        list -- список объектов
+    """
+    if isinstance(obj_or_list, list):
+        return obj_or_list
+    objs = list()
+    objs.append(obj_or_list)
+    return objs
+
+@template_function
 def from_file(file, format=''):
 
     if not format:
