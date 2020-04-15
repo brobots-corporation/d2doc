@@ -3,6 +3,10 @@
 Генерация документации на основании входных файлов с данными и шаблонов выходных документов
 
 [![Build Status](https://travis-ci.org/brobots-corporation/d2doc.svg?branch=master)](https://travis-ci.org/brobots-corporation/d2doc) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=d2doc&metric=alert_status)](https://sonarcloud.io/dashboard?id=d2doc)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=d2doc&metric=coverage)](https://sonarcloud.io/dashboard?id=d2doc)
+[![](https://img.shields.io/pypi/v/d2doc.svg?style=flat&color=blue)](https://pypi.org/project/d2doc/)
+[![](https://img.shields.io/pypi/pyversions/d2doc.svg)](https://pypi.python.org/pypi/d2doc/)
+[![](https://img.shields.io/badge/license-GPL3-yellow.svg)](https://github.com/brobots-corporation/d2doc/blob/master/LICENSE)
 
 ## Возможности
 * Работа в ОС: `Linux`, `Mac OS X`, `Windows`;
@@ -20,7 +24,7 @@
 * Для обновления пакета необходимо воспользоваться командой:
     ```sh
     pip install -U d2doc
-    
+
 ## Использование скрипта
 ```
 Usage: d2doc.py [OPTIONS] COMMAND [ARGS]...
