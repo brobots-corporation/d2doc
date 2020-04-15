@@ -27,7 +27,7 @@
 
 ## Использование скрипта
 ```
-Usage: d2doc.py [OPTIONS] COMMAND [ARGS]...
+Usage: d2doc [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --log-level TEXT  Log level [CRITICAL, FATAL, ERROR, WARNING, DEBUG, INFO,
@@ -39,7 +39,7 @@ Commands:
 ```  
 Использование команды `build`
 ```
-Usage: d2doc.py build [OPTIONS]
+Usage: d2doc build [OPTIONS]
 
 Options:
   -t, --templates PATH        Path to template files.
@@ -58,7 +58,7 @@ Options:
 
 ### Пример использования скрипта в Linux
 ```sh
-d2doc.py build \
+d2doc build \
 	--templates './test/test1/templates' \
 	--start-templates 'Оглавление' \
 	--data-dir './test/test1/data' \
@@ -77,7 +77,7 @@ export D2DOC_BUILD_DATA_DIR_MASK='**/*.json'
 export D2DOC_BUILD_OUTPUT_DIR='./test/test1/doc'
 export D2DOC_BUILD_STATIC='./test/test1/doc/static'
 export D2DOC_LOG_LEVEL='DEBUG'
-d2doc.py build --erase-output-dir
+d2doc build --erase-output-dir
 ```
 
 ## Шаблоны
