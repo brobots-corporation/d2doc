@@ -1,5 +1,5 @@
 
-.PHONY: prepare_venv install run-dir run-env run
+.PHONY: prepare_venv install run-dir run-env run dist
 
 VENV_NAME?=venv
 PYTHON=${VENV_NAME}/bin/python
@@ -20,7 +20,7 @@ run-dir: prepare_venv
 		--start-templates 'index' \
 		--data-dir ./d2doc/test/test1/data \
 		--data-dir-mask '**/*.json' \
-		--output-dir './d2doc//test/test1/doc' \
+		--output-dir './d2doc/test/test1/doc' \
 		--static './d2doc/test/test1/templates/static' \
 		--static './d2doc/test/test1/templates/static2' \
 		--erase-output-dir
@@ -35,3 +35,6 @@ run-env: prepare_venv
 	&& ${PYTHON} -m d2doc build --erase-output-dir
 
 run: run-env
+
+dist:
+	${PYTHON} setup.py sdist bdist_wheel
