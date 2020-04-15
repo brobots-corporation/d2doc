@@ -1,6 +1,9 @@
+os: linux
+dist: xenial
 language: python
 
-dist: xenial
+git:
+  depth: false  # "Shallow clone detected during the analysis"
 
 jobs:
   include:
@@ -10,8 +13,15 @@ jobs:
         sonarcloud:
           organization: "brobots-corporation"
       script: sonar-scanner
-
+    - stage: "deploy pypi"
+      script: skip
+      deploy:
+        provider: pypi
+        username: "__token__"
+        password: $PYPI_TOKEN
+        distributions: "sdist bdist_wheel"
+        on:
+          tags: true
 notifications:
   email:
     on_failure: change
-    on_error: change
