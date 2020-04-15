@@ -9,7 +9,7 @@
 **/build
 **/dist
 objects_sonar.spec
-**/bsl2sq.egg-info
+**/d2doc.egg-info
 
 # Игнорировать байткод
 *.pyc

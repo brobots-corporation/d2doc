@@ -9,10 +9,10 @@ here_path = path.abspath(path.dirname(__file__))
 with open(path.join(here_path, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-setup(name='bsl2sq',
+setup(name='d2doc',
       python_requires='>=3.6.0',
       version=__version__,
-      description='d2doc desc',
+      description='Make technical documentstion from data sets',
       long_description=long_description,
       long_description_content_type='text/markdown',
       author='Evgenii Alaev',
