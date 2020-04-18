@@ -30,6 +30,13 @@ setup(name='d2doc',
           'Programming Language :: Python :: 3.8',
           'Topic :: Software Development :: Libraries :: Python Modules'
       ],
+      install_requires=[
+            'Click>=7.0',
+            'Jinja2>=2.11.1',
+            'MarkupSafe>=1.1.1',
+            'PyYAML>=5.3'
+            'xmltodict>=0.12.0'
+        ],
       packages=find_packages(),
       #tests_require=['coverage', 'unittest-xml-reporting'],
       #test_suite='tests',
